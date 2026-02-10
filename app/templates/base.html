@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDENTIA | Plateforme Institutionnelle de Pointage</title>
+    <!-- Tailwind CSS via CDN for development, professional config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f4ff',
+                            100: '#e0e9fe',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .vibrant-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+        }
+    </style>
+</head>
+<body class="h-full font-sans text-slate-900">
+    
+    {% if current_user.is_authenticated %}
+    <div class="min-h-full flex flex-col">
+        <!-- Modern Header -->
+        <header class="glass sticky top-0 z-40 w-full border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 vibrant-gradient rounded-lg flex items-center justify-center text-white font-bold text-lg">I</div>
+                        <span class="text-xl font-bold tracking-tight text-brand-900">IDENTIA</span>
+                    </div>
+                    
+                    <nav class="hidden md:flex space-x-8">
+                        <a href="{{ url_for('main.dashboard') }}" class="text-slate-600 hover:text-brand-600 font-medium">Tableau de bord</a>
+                        <a href="{{ url_for('main.students_list') }}" class="text-slate-600 hover:text-brand-600 font-medium">Étudiants</a>
+                        <a href="{{ url_for('main.attendance_mgmt') }}" class="text-slate-600 hover:text-brand-600 font-medium">Présences</a>
+                        {% if current_user.role in ['SUPER_ADMIN', 'TECH_USER'] %}
+                        <a href="{{ url_for('main.audit_view') }}" class="text-slate-600 hover:text-brand-600 font-medium">Audit & Logs</a>
+                        {% endif %}
+                    </nav>
+
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-3 pr-4 border-r border-slate-200">
+                            <div class="text-right hidden sm:block">
+                                <p class="text-sm font-semibold text-slate-900 leading-none">{{ current_user.full_name }}</p>
+                                <p class="text-xs text-slate-500">{{ current_user.role }}</p>
+                            </div>
+                            <div class="w-9 h-9 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold uppercase">
+                                {{ current_user.full_name[:2] }}
+                            </div>
+                        </div>
+                        <a href="{{ url_for('auth.logout') }}" class="text-sm font-medium text-red-600 hover:text-red-700">Déconnexion</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="flex-grow py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for message in messages %}
+                      <div class="mb-4 p-4 rounded-lg bg-red-50 text-red-700 border border-red-100">{{ message }}</div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+                
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-slate-200 py-6">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <p class="text-sm text-slate-500">&copy; 2026 IDENTIA Platform. Système de reconnaissance faciale institutionnel.</p>
+            </div>
+        </footer>
+    </div>
+    {% else %}
+        {% block auth_content %}{% endblock %}
+    {% endif %}
+
+</body>
+</html>

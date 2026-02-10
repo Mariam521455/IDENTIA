@@ -1,0 +1,14 @@
+flask
+flask-sqlalchemy
+flask-migrate
+flask-login
+flask-wtf
+python-dotenv
+face_recognition
+opencv-python
+numpy
+marshmallow
+argon2-cffi
+pandas
+openpyxl
+flask-cors
