@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDENTIA - Espace Étudiant</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 0L5 8V18C5 27.2 11.4 35.7 20 38C28.6 35.7 35 27.2 35 18V8L20 0Z" fill="#4A86E8" />
+                    <circle cx="20" cy="15" r="5" fill="white" />
+                    <path d="M20 22C16.134 22 13 25.1341 13 29V30H27V29C27 25.1341 23.866 22 20 22Z" fill="white" />
+                </svg>
+                <span>IDENTIA</span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item active">
+                    <i class="fa-solid fa-house"></i>
+                    Tableau de Bord
+                </a>
+                <a href="presences.html" class="nav-item">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Mes Présences
+                </a>
+            </nav>
+
+            <a href="profil.html" class="sidebar-user" style="text-decoration: none; color: white;">
+                <img src="https://i.pravatar.cc/150?u=student1" alt="Étudiant" class="user-avatar">
+                <div class="user-info">
+                    <span class="name">Souleymane Diarra</span>
+                    <span class="role">Étudiant</span>
+                </div>
+            </a>
+        </aside>
+
+        <main class="main-viewport">
+            <header class="page-header">
+                <h1 class="page-title">Bienvenue, Souleymane</h1>
+
+                <div class="header-actions">
+                    <div class="icons" style="display: flex; gap: 16px; align-items: center;">
+                        <i class="fa-regular fa-bell" style="color: var(--text-muted);"></i>
+                        <img src="https://i.pravatar.cc/150?u=student1" alt="Avatar"
+                            style="width: 32px; height: 32px; border-radius: 50%;">
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-card"
+                style="margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #4a86e8 0%, #3a6bc0 100%); color: white; padding: 32px;">
+                <div>
+                    <h2 style="font-size: 24px; margin-bottom: 8px;">Prêt pour le cours ?</h2>
+                    <p style="opacity: 0.9; margin-bottom: 24px;">Enregistrez votre présence rapidement grâce à la
+                        reconnaissance faciale.</p>
+                    <button onclick="toggleModal('pointerModal')" class="btn-primary"
+                        style="background: white; color: var(--primary); width: auto; padding: 12px 24px; margin-top: 0;">
+                        <i class="fa-solid fa-camera" style="margin-right: 8px;"></i> Pointer ma Présence
+                    </button>
+                </div>
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/student-doing-online-study-2769415-2311495.png"
+                    alt="Study" style="height: 150px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));">
+            </div>
+
+            <div class="content-card">
+                <div class="table-header">
+                    <h3 style="font-size: 18px; font-weight: 700;">Historique Récent</h3>
+                    <a href="presences.html"
+                        style="font-size: 14px; color: var(--primary); text-decoration: none; font-weight: 600;">Voir
+                        tout</a>
+                </div>
+
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Heure</th>
+                            <th>Cours</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>24 Fév, 2026</td>
+                            <td>08:15</td>
+                            <td>Mathématiques Avancées</td>
+                            <td><span class="status-badge status-present">Présent</span></td>
+                        </tr>
+                        <tr>
+                            <td>23 Fév, 2026</td>
+                            <td>10:22</td>
+                            <td>Intelligence Artificielle</td>
+                            <td><span class="status-badge status-present">Présent</span></td>
+                        </tr>
+                        <tr>
+                            <td>22 Fév, 2026</td>
+                            <td>--:--</td>
+                            <td>Algorithmique</td>
+                            <td><span class="status-badge status-absent">Absent</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Confirmer Présence (Facial Recognition) -->
+    <div id="pointerModal" class="modal-overlay hidden">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3>Confirmer Présence</h3>
+                <i class="fa-solid fa-xmark" onclick="toggleModal('pointerModal')"
+                    style="cursor:pointer; color: var(--text-muted);"></i>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div class="camera-simulation"
+                    style="width: 100%; aspect-ratio: 1/1; background: #f1f5f9; border-radius: 12px; position: relative; overflow: hidden; margin-bottom: 20px;">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop"
+                        alt="Face" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div
+                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70%; height: 70%; border: 2px dashed white; border-radius: 12px; box-shadow: 0 0 0 1000px rgba(15, 23, 42, 0.4);">
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; color: white; font-size: 14px; font-weight: 600;">
+                        Analyse faciale en cours...</div>
+                </div>
+
+                <div
+                    style="display: flex; align-items: center; gap: 12px; text-align: left; background: #f8fafc; padding: 12px; border-radius: 8px;">
+                    <img src="https://i.pravatar.cc/150?u=student1" alt=""
+                        style="width: 40px; height: 40px; border-radius: 50%;">
+                    <div>
+                        <div style="font-weight: 700; font-size: 14px;">Souleymane Diarra</div>
+                        <div style="font-size: 12px; color: var(--text-muted);"><i class="fa-regular fa-clock"></i> 24
+                            Fév, 2026 • 11:55</div>
+                    </div>
+                    <span class="status-badge status-present" style="margin-left: auto;">Identifié</span>
+                </div>
+
+                <div class="modal-footer" style="padding: 0; margin-top: 24px;">
+                    <button type="button" class="btn-primary" onclick="toggleModal('pointerModal')"
+                        style="margin-top: 0;">Confirmer le Pointage</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+    </script>
+</body>
+
+</html>
