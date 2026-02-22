@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDENTIA - Ajouter Utilisateur</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .ajouter-page {
+            display: grid;
+            place-items: center;
+            height: 100vh;
+            background: #cbd5e1;
+            padding: 20px;
+        }
+
+        .modal-like-card {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .close-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-basic,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-basic:focus,
+        select:focus {
+            border-color: var(--primary);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .btn-outline {
+            padding: 10px 24px;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-add {
+            padding: 10px 32px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ajouter-page">
+        <div class="modal-like-card">
+            <div class="modal-header">
+                <h3>Ajouter Utilisateur</h3>
+                <a href="utilisateurs.html" class="close-link"><i class="fa-solid fa-xmark"></i></a>
+            </div>
+
+            <form action="utilisateurs.html">
+                <div class="input-group">
+                    <label>Nom Complet</label>
+                    <input type="text" class="input-basic" placeholder="Nom d'utilisateur">
+                </div>
+
+                <div class="input-group">
+                    <label>Nom d'utilisateur</label>
+                    <input type="text" class="input-basic" placeholder="Mot de passe">
+                </div>
+
+                <div class="input-group">
+                    <label>Rôle</label>
+                    <select>
+                        <option>Étudiant</option>
+                        <option>Enseignant</option>
+                        <option>Admin</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="utilisateurs.html" class="btn-outline">Fermer</a>
+                    <button type="submit" class="btn-add">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

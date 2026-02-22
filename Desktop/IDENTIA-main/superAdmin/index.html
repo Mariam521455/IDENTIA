@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDENTIA - Tableau de Bord</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 0L5 8V18C5 27.2 11.4 35.7 20 38C28.6 35.7 35 27.2 35 18V8L20 0Z" fill="#4A86E8" />
+                    <circle cx="20" cy="15" r="5" fill="white" />
+                    <path d="M20 22C16.134 22 13 25.1341 13 29V30H27V29C27 25.1341 23.866 22 20 22Z" fill="white" />
+                </svg>
+                <span>IDENTIA</span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item active">
+                    <i class="fa-solid fa-table-columns"></i>
+                    Tableau de Bord
+                </a>
+                <a href="utilisateurs.html" class="nav-item">
+                    <i class="fa-solid fa-users"></i>
+                    Utilisateurs
+                </a>
+                <a href="presences.html" class="nav-item">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    Présences
+                </a>
+                <a href="journal.html" class="nav-item">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    Journal des Actions
+                </a>
+            </nav>
+
+            <a href="profil.html" class="sidebar-user" style="text-decoration: none; color: white;">
+                <img src="https://i.pravatar.cc/150?u=superadmin" alt="Admin" class="user-avatar">
+                <div class="user-info">
+                    <span class="name">Super Admin</span>
+                    <span class="role">Admin</span>
+                </div>
+            </a>
+        </aside>
+
+        <main class="main-viewport">
+            <header class="page-header">
+                <h1 class="page-title">Tableau de Bord</h1>
+
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Rechercher">
+                    </div>
+                    <div class="icons" style="display: flex; gap: 16px; align-items: center;">
+                        <i class="fa-regular fa-bell" style="color: var(--text-muted);"></i>
+                        <i class="fa-brands fa-github" style="color: var(--text-muted);"></i>
+                        <img src="https://i.pravatar.cc/150?u=current" alt="Avatar"
+                            style="width: 32px; height: 32px; border-radius: 50%;">
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-card">
+                <div class="table-header">
+                    <div class="filters" style="display: flex; gap: 12px; align-items: center;">
+                        <span style="font-size: 14px; color: var(--text-muted);">Filtres:</span>
+                        <div class="search-bar" style="width: 150px;">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" placeholder="Tous" style="padding: 4px 8px 4px 28px;">
+                        </div>
+                    </div>
+                    <div class="buttons" style="display: flex; gap: 12px;">
+                        <button onclick="toggleModal('addUserModal')" class="btn-primary"
+                            style="margin-top: 0; padding: 8px 16px; font-size: 14px;">+ Ajouter Utilisateur</button>
+                        <button onclick="toggleModal('exportModal')"
+                            style="padding: 8px 16px; border: 1px solid var(--border-color); background: white; border-radius: 6px; font-size: 14px; font-weight: 600;">Exporter
+                            Données</button>
+                    </div>
+                </div>
+
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Date</th>
+                            <th>Statut</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="student-cell">
+                                    <img src="https://i.pravatar.cc/150?u=adam" alt=""
+                                        style="width: 32px; height: 32px; border-radius: 50%;">
+                                    <span>Adam Doe</span>
+                                </div>
+                            </td>
+                            <td>23 Avr, 2024</td>
+                            <td><span class="status-badge status-present">Présent</span></td>
+                            <td>Présent</td>
+                            <td><i class="fa-solid fa-ellipsis"></i></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="student-cell">
+                                    <img src="https://i.pravatar.cc/150?u=tech" alt=""
+                                        style="width: 32px; height: 32px; border-radius: 50%;">
+                                    <span>TechUser</span>
+                                </div>
+                            </td>
+                            <td>23 Avr, 2024</td>
+                            <td><span class="status-badge status-waiting">En attente</span></td>
+                            <td>En attente</td>
+                            <td><i class="fa-solid fa-ellipsis"></i></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="student-cell">
+                                    <img src="https://i.pravatar.cc/150?u=lectra" alt=""
+                                        style="width: 32px; height: 32px; border-radius: 50%;">
+                                    <span>Lectragt Tess</span>
+                                </div>
+                            </td>
+                            <td>24 Avr, 2024</td>
+                            <td><span class="status-badge status-present">Présent</span></td>
+                            <td>Présent</td>
+                            <td><i class="fa-solid fa-ellipsis"></i></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="student-cell">
+                                    <img src="https://i.pravatar.cc/150?u=salam" alt=""
+                                        style="width: 32px; height: 32px; border-radius: 50%;">
+                                    <span>Salaman</span>
+                                </div>
+                            </td>
+                            <td>23 Avr, 2024</td>
+                            <td><span class="status-badge status-waiting">En attente</span></td>
+                            <td>En attente</td>
+                            <td><i class="fa-solid fa-ellipsis"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="pagination"
+                    style="display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 24px; font-size: 13px; color: var(--text-muted);">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span
+                        style="background: var(--bg-light); padding: 4px 8px; border-radius: 4px; color: var(--text-main); font-weight: 600;">1</span>
+                    <span>3</span>
+                    <span>5</span>
+                    <span>...</span>
+                    <span>10</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Modal: Ajouter Utilisateur -->
+    <div id="addUserModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Ajouter Utilisateur</h3>
+                <i class="fa-solid fa-xmark" onclick="toggleModal('addUserModal')"
+                    style="cursor:pointer; color: var(--text-muted);"></i>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="event.preventDefault(); toggleModal('addUserModal');">
+                    <label>Nom Complet</label>
+                    <input type="text" class="input-basic" placeholder="Nom d'utilisateur">
+
+                    <label>Nom d'utilisateur</label>
+                    <input type="text" class="input-basic" placeholder="Mot de passe">
+
+                    <label>Rôle</label>
+                    <select class="input-basic">
+                        <option>Étudiant</option>
+                        <option>Enseignant</option>
+                        <option>Admin</option>
+                    </select>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-outline" onclick="toggleModal('addUserModal')">Fermer</button>
+                        <button type="submit" class="btn-primary btn-small">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Exporter Données -->
+    <div id="exportModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Exporter Données</h3>
+                <i class="fa-solid fa-xmark" onclick="toggleModal('exportModal')"
+                    style="cursor:pointer; color: var(--text-muted);"></i>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="event.preventDefault(); toggleModal('exportModal');">
+                    <div class="date-range">
+                        <div class="date-pill"><i class="fa-regular fa-calendar"></i> 23 jan. 2022</div>
+                        <div class="date-pill"><i class="fa-regular fa-calendar"></i> 03 jan. 2022</div>
+                    </div>
+
+                    <div class="radio-group" style="display: flex; gap: 16px; margin-bottom: 24px;">
+                        <div class="radio-item"><i class="fa-regular fa-circle"></i> Tous</div>
+                        <div class="radio-item"><i class="fa-regular fa-circle"></i> Présent</div>
+                        <div class="radio-item"><i class="fa-solid fa-circle-dot" style="color: var(--primary);"></i>
+                            Présent</div>
+                        <div class="radio-item"><i class="fa-regular fa-circle"></i> An attente</div>
+                    </div>
+
+                    <label>Filtres</label>
+                    <div class="tag-group">
+                        <div class="tag-item"><i class="fa-regular fa-file-excel" style="color: #059669;"></i> Excel
+                        </div>
+                        <div class="tag-item active-blue"><i class="fa-solid fa-table-list"></i> Présent</div>
+                        <div class="tag-item"><i class="fa-solid fa-list-check"></i> Entente</div>
+                    </div>
+
+                    <label>Format Import</label>
+                    <div class="tag-group">
+                        <div class="tag-item"><i class="fa-regular fa-file-excel" style="color: #059669;"></i> Excel
+                        </div>
+                        <div class="tag-item"><i class="fa-regular fa-file-pdf" style="color: #dc2626;"></i> PDF</div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn-outline" onclick="toggleModal('exportModal')">Fermer</button>
+                        <button type="submit" class="btn-primary btn-small">Exporter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+    </script>
+</body>
+
+</html>
