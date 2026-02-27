@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="py-6 max-w-4xl mx-auto space-y-10">
+    <!-- Header -->
+    <div class="text-center space-y-2">
+        <h1 class="text-4xl font-bold text-white tracking-tight font-display">Nouvel Enrôlement</h1>
+        <p class="text-slate-400">Suivez les étapes pour enregistrer un nouvel étudiant dans le système IDENTIA.</p>
+    </div>
+
+    <!-- Stepper -->
+    <div class="flex items-center justify-between relative px-10">
+        <div class="absolute top-1/2 left-0 w-full h-0.5 bg-white/5 -translate-y-1/2 z-0"></div>
+        <div id="step-line"
+            class="absolute top-1/2 left-0 h-0.5 bg-brand-blue -translate-y-1/2 z-0 transition-all duration-500"
+            style="width: 0%"></div>
+
+        <div class="relative z-10 flex flex-col items-center gap-2 group cursor-pointer" onclick="goToStep(1)">
+            <div id="step-1-circle"
+                class="w-10 h-10 rounded-full bg-brand-blue flex items-center justify-center text-white ring-4 ring-brand-dark transition-all">
+                <i data-lucide="user" class="w-5 h-5"></i>
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-brand-blue">Informations</span>
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center gap-2 group cursor-pointer" onclick="goToStep(2)">
+            <div id="step-2-circle"
+                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 ring-4 ring-brand-dark transition-all">
+                <i data-lucide="camera" class="w-5 h-5"></i>
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Capture</span>
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center gap-2 group cursor-pointer" onclick="goToStep(3)">
+            <div id="step-3-circle"
+                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 ring-4 ring-brand-dark transition-all">
+                <i data-lucide="check-circle" class="w-5 h-5"></i>
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Validation</span>
+        </div>
+    </div>
+
+    <!-- Step 1: Form -->
+    <div id="step-1-content" class="glass-card p-10 space-y-8 animate-fade-in border-white/10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Nom Complet</label>
+                <div class="relative">
+                    <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600"></i>
+                    <input type="text"
+                        class="w-full bg-white/5 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-brand-blue/50 focus:ring-1 focus:ring-brand-blue/50 outline-none transition-all"
+                        placeholder="Ex: Jean Dupont">
+                </div>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Matricule</label>
+                <div class="relative">
+                    <i data-lucide="credit-card"
+                        class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600"></i>
+                    <input type="text"
+                        class="w-full bg-white/5 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-white focus:border-brand-blue/50 focus:ring-1 focus:ring-brand-blue/50 outline-none transition-all"
+                        placeholder="Ex: 26-INF-042">
+                </div>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Classe Academic</label>
+                <select
+                    class="w-full bg-white/5 border border-white/5 rounded-2xl py-4 px-4 text-white focus:border-brand-blue/50 focus:ring-1 focus:ring-brand-blue/50 outline-none transition-all appearance-none">
+                    <option value="" class="bg-brand-dark">Choisir une classe</option>
+                    <option value="L1" class="bg-brand-dark">Licence 1</option>
+                    <option value="L2" class="bg-brand-dark">Licence 2</option>
+                    <option value="L3" class="bg-brand-dark">Licence 3</option>
+                    <option value="M1" class="bg-brand-dark">Master 1</option>
+                    <option value="M2" class="bg-brand-dark">Master 2</option>
+                </select>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest">Filière / Spécialité</label>
+                <select
+                    class="w-full bg-white/5 border border-white/5 rounded-2xl py-4 px-4 text-white focus:border-brand-blue/50 focus:ring-1 focus:ring-brand-blue/50 outline-none transition-all appearance-none">
+                    <option value="" class="bg-brand-dark">Choisir une filière</option>
+                    <option value="FC" class="bg-brand-dark">Finance Comptabilité</option>
+                    <option value="GRH" class="bg-brand-dark">Gestion de Ressources Humaines</option>
+                    <option value="MC" class="bg-brand-dark">Marketing et Communication</option>
+                    <option value="GLT" class="bg-brand-dark">Gestion Logistique et Transport (Nouveau)</option>
+                    <option value="GI" class="bg-brand-dark">Génie Informatique</option>
+                </select>
+            </div>
+        </div>
+        <div class="flex justify-end pt-4">
+            <button onclick="nextStep(2)" class="btn-neumorph px-8 py-4 flex items-center gap-2 font-bold">
+                Continuer vers la capture
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Step 2: Capture -->
+    <div id="step-2-content" class="hidden glass-card p-10 space-y-8 animate-fade-in border-white/10 text-center">
+        <h3 class="text-xl font-bold text-white">Capture Biométrique</h3>
+        <p class="text-sm text-slate-500 max-w-md mx-auto">Veuillez vous positionner face à la caméra. Le système va
+            capturer 5 angles pour une précision maximale.</p>
+
+        <div
+            class="relative w-full max-w-sm mx-auto aspect-square glass-card rounded-3xl overflow-hidden border-brand-blue/30 shadow-2xl shadow-blue-500/10 mb-8">
+            <div class="absolute inset-0 bg-slate-900/50 flex items-center justify-center">
+                <div class="flex flex-col items-center gap-4 text-slate-400">
+                    <i data-lucide="video-off" class="w-12 h-12 opacity-20"></i>
+                    <p class="text-xs font-bold uppercase tracking-widest opacity-40">Attente de flux vidéo...</p>
+                </div>
+            </div>
+            <!-- Dynamic Corner Indicators -->
+            <div class="absolute top-8 left-8 w-8 h-8 border-t-2 border-l-2 border-brand-blue"></div>
+            <div class="absolute top-8 right-8 w-8 h-8 border-t-2 border-r-2 border-brand-blue"></div>
+            <div class="absolute bottom-8 left-8 w-8 h-8 border-b-2 border-l-2 border-brand-blue"></div>
+            <div class="absolute bottom-8 right-8 w-8 h-8 border-b-2 border-r-2 border-brand-blue"></div>
+
+            <div class="camera-overlay"></div>
+        </div>
+
+        <div class="flex justify-center gap-4">
+            <button onclick="nextStep(1)"
+                class="px-8 py-4 rounded-2xl border border-white/10 font-bold text-slate-400 hover:bg-white/5 transition-all flex items-center gap-2">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                Retour
+            </button>
+            <button onclick="simulateCapture()"
+                class="btn-neumorph px-8 py-4 flex items-center gap-2 font-bold shadow-blue-500/20">
+                <i data-lucide="camera" class="w-5 h-5"></i>
+                Lancer la Capture
+            </button>
+        </div>
+    </div>
+
+    <!-- Step 3: Validation -->
+    <div id="step-3-content" class="hidden glass-card p-10 space-y-8 animate-fade-in border-emerald-500/20 text-center">
+        <div class="w-20 h-20 bg-emerald-500/10 text-emerald-500 rounded-full mx-auto flex items-center justify-center">
+            <i data-lucide="check-circle-2" class="w-12 h-12"></i>
+        </div>
+        <div>
+            <h3 class="text-2xl font-bold text-white">Profil Enregistré !</h3>
+            <p class="text-slate-500 mt-2">L'étudiant a été correctement ajouté au registre IDENTIA.</p>
+        </div>
+
+        <div class="glass-card bg-white/5 p-6 rounded-2xl max-w-sm mx-auto flex items-center gap-4 text-left">
+            <div
+                class="w-12 h-12 rounded-full bg-brand-blue/20 flex items-center justify-center font-bold text-brand-blue">
+                JD</div>
+            <div>
+                <p class="text-sm font-bold text-white">Jean Dupont</p>
+                <p class="text-xs text-slate-500">26-INF-042 | Génie Informatique</p>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-3 pt-6">
+            <a href="{{ url_for('main.students_list') }}" class="btn-neumorph py-4 font-bold">Voir la liste des
+                étudiants</a>
+            <a href="{{ url_for('main.dashboard') }}"
+                class="py-4 text-slate-400 font-bold hover:text-white transition-colors">Retour au Tableau de bord</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function nextStep(step) {
+        document.getElementById('step-1-content').classList.add('hidden');
+        document.getElementById('step-2-content').classList.add('hidden');
+        document.getElementById('step-3-content').classList.add('hidden');
+
+        document.getElementById(`step-${step}-content`).classList.remove('hidden');
+
+        // Update Stepper Visuals
+        const circles = [1, 2, 3];
+        const line = document.getElementById('step-line');
+
+        line.style.width = ((step - 1) / 2 * 100) + '%';
+
+        circles.forEach(c => {
+            const el = document.getElementById(`step-${c}-circle`);
+            const label = el.nextElementSibling;
+
+            if (c < step) {
+                el.classList.replace('bg-slate-800', 'bg-emerald-500');
+                el.classList.replace('text-slate-500', 'text-white');
+                el.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i>';
+                label.classList.replace('text-slate-500', 'text-emerald-500');
+            } else if (c === step) {
+                el.className = "w-10 h-10 rounded-full bg-brand-blue flex items-center justify-center text-white ring-4 ring-brand-dark transition-all";
+                label.classList.replace('text-slate-500', 'text-brand-blue');
+                if (c === 1) el.innerHTML = '<i data-lucide="user" class="w-5 h-5"></i>';
+                if (c === 2) el.innerHTML = '<i data-lucide="camera" class="w-5 h-5"></i>';
+                if (c === 3) el.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5"></i>';
+            } else {
+                el.className = "w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-500 ring-4 ring-brand-dark transition-all";
+                label.classList.replace('text-brand-blue', 'text-slate-500');
+                label.classList.replace('text-emerald-500', 'text-slate-500');
+            }
+        });
+        lucide.createIcons();
+    }
+
+    function goToStep(step) {
+        // Only allow going back or forward if already validated? 
+        // For prototype, allow all.
+        nextStep(step);
+    }
+
+    function simulateCapture() {
+        const overlay = document.querySelector('.camera-overlay');
+        overlay.classList.add('detected');
+
+        setTimeout(() => {
+            overlay.classList.replace('detected', 'recognized');
+            setTimeout(() => {
+                nextStep(3);
+            }, 1000);
+        }, 1500);
+    }
+</script>
+
+<style>
+    /* Appearance fix for selects */
+    select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+        background-position: right 1rem center;
+        background-repeat: no-repeat;
+        background-size: 1.25rem;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,151 @@
+/* 
+   IDENTIA - Deep Blue Harmony Design System
+   Identity: Professional, Secure, Modern, Fluid
+*/
+
+:root {
+    /* Color Palette */
+    --brand-dark: #0a192f;
+    --brand-navy: #1e3a8a;
+    --brand-blue: #2563eb;
+    --brand-light: #f0f4f8;
+    --white: #ffffff;
+
+    /* Glassmorphism Defaults */
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-blur: 15px;
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background-color: var(--brand-dark);
+    color: var(--brand-light);
+    font-family: 'Outfit', 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Background Gradients */
+.vibrant-bg {
+    background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.15), transparent),
+        radial-gradient(circle at bottom left, rgba(30, 58, 138, 0.2), transparent);
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    transition: var(--transition-smooth);
+}
+
+.glass-card:hover {
+    border-color: rgba(37, 99, 235, 0.4);
+    transform: translateY(-4px);
+}
+
+/* Neumorphism subtle effect for buttons */
+.btn-neumorph {
+    background: var(--brand-blue);
+    border-radius: 12px;
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.2),
+        -2px -2px 6px rgba(255, 255, 255, 0.1);
+    transition: var(--transition-smooth);
+    border: none;
+    color: white;
+}
+
+.btn-neumorph:hover {
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3),
+        -1px -1px 4px rgba(255, 255, 255, 0.05);
+    transform: scale(0.98);
+    opacity: 0.95;
+}
+
+/* Smart Overlays for Recognition */
+.camera-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 250px;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    pointer-events: none;
+    transition: var(--transition-smooth);
+}
+
+.camera-overlay.detected {
+    border-color: #fbbf24;
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+.camera-overlay.recognized {
+    border-color: #10b981;
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.camera-overlay.unknown {
+    border-color: #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+/* Typography improvements */
+.text-gradient {
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Micro-animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Skeleton Screens */
+.skeleton {
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Responsive Sidebar Navigation */
+.sidebar-nav {
+    border-right: 1px solid var(--glass-border);
+    transition: var(--transition-smooth);
+}
+
+.nav-link-active {
+    background: rgba(37, 99, 235, 0.1);
+    border-left: 4px solid var(--brand-blue);
+    color: var(--brand-blue);
+}
