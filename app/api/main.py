@@ -1,28 +1,51 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, current_app
 from flask_login import login_required, current_user
+from app.domain.services.attendance_service import AttendanceService
+from app.domain.models.schedule import AcademicClass, Schedule
+from app.domain.models.user import AuditLog
+from app.domain.models.attendance import Student
 
 main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
+def index():
+    return render_template('index.html')
+
+@main_bp.route('/portal')
+def portal():
+    # Pass classes for enrollment if needed, though recognition.py handles /enroll
+    return render_template('portal.html')
+
 @main_bp.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html')
+    stats = AttendanceService.get_dashboard_stats()
+    recent_logs = AuditLog.query.order_by(AuditLog.timestamp.desc()).limit(10).all()
+    return render_template('dashboard.html', stats=stats, recent_logs=recent_logs)
 
 @main_bp.route('/students')
 @login_required
 def students_list():
-    return render_template('students.html')
+    students = Student.query.all()
+    classes = AcademicClass.query.all()
+    return render_template('students.html', students=students, classes=classes)
 
-@main_bp.route('/attendance')
+@main_bp.route('/classes')
 @login_required
-def attendance_mgmt():
-    return render_template('attendance.html')
+def classes_list():
+    classes = AcademicClass.query.all()
+    return render_template('classes.html', classes=classes)
+
+@main_bp.route('/schedules')
+@login_required
+def schedules_list():
+    schedules = Schedule.query.all()
+    return render_template('schedules.html', schedules=schedules)
 
 @main_bp.route('/audit')
 @login_required
 def audit_view():
-    # Only for SUPER_ADMIN or TECH_USER
     if current_user.role not in ['SUPER_ADMIN', 'TECH_USER']:
         return "Access Forbidden", 403
-    return render_template('audit.html')
+    logs = AuditLog.query.order_by(AuditLog.timestamp.desc()).all()
+    return render_template('audit.html', logs=logs)

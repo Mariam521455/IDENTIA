@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 text-center mb-5">
+        <h2 class="fw-bold">Pointage en Temps Réel</h2>
+        <p class="text-muted">Placez-vous devant la caméra pour validation automatique.</p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-2xl rounded-5 overflow-hidden position-relative bg-dark"
+            style="min-height: 480px;">
+            <video id="video" width="100%" height="auto" autoplay muted></video>
+
+            <!-- Scanning Animation Overlay -->
+            <div id="scanning-line" class="position-absolute w-100"
+                style="height: 2px; background: rgba(37, 99, 235, 0.5); box-shadow: 0 0 15px #2563eb; top: 0; animation: scan 3s infinite linear;">
+            </div>
+
+            <!-- Result Overlay (Fixed position bottom) -->
+            <div id="result-overlay"
+                class="position-absolute bottom-0 start-0 e-0 p-4 w-100 text-center translate-middle-x start-50 d-none"
+                style="z-index: 10;">
+                <div class="glass-card d-inline-block px-5 py-3 border-0">
+                    <h3 id="result-name" class="fw-bold mb-1">...</h3>
+                    <p id="result-status" class="mb-0 fw-bold"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5 d-flex justify-content-center gap-4 align-items-center">
+            <div class="text-center px-4 border-end">
+                <div class="h4 fw-bold mb-0">12:45</div>
+                <div class="small text-muted uppercase">Heure Actuelle</div>
+            </div>
+            <div class="text-center px-4 border-end">
+                <div class="h4 fw-bold mb-0 text-primary">SC-01</div>
+                <div class="small text-muted uppercase">Salle / Session</div>
+            </div>
+            <div class="text-center px-4">
+                <div class="h4 fw-bold mb-0" id="stat-count">42</div>
+                <div class="small text-muted uppercase">Présents</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes scan {
+        0% {
+            top: 0;
+        }
+
+        50% {
+            top: 100%;
+        }
+
+        100% {
+            top: 0;
+        }
+    }
+</style>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.createElement('canvas');
+    const resultOverlay = document.getElementById('result-overlay');
+    const resultName = document.getElementById('result-name');
+    const resultStatus = document.getElementById('result-status');
+    const statCount = document.getElementById('stat-count');
+
+    navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } })
+        .then(stream => { video.srcObject = stream; })
+        .catch(err => { console.error("Erreur caméra: ", err); });
+
+    function showResult(name, message, status) {
+        resultName.innerText = name || "Inconnu";
+        resultStatus.innerText = message;
+
+        // Color coding
+        if (status === 'success') {
+            resultStatus.className = 'mb-0 fw-bold text-success';
+        } else if (status === 'refused') {
+            resultStatus.className = 'mb-0 fw-bold text-danger';
+        } else {
+            resultStatus.className = 'mb-0 fw-bold text-warning';
+        }
+
+        resultOverlay.classList.remove('d-none');
+        setTimeout(() => {
+            resultOverlay.classList.add('d-none');
+        }, 4000);
+    }
+
+    async function identifyFace() {
+        if (video.paused || video.ended) return;
+
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const b64 = canvas.toDataURL('image/jpeg', 0.8);
+
+        try {
+            const response = await fetch("{{ url_for('recognition.identify') }}", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ image: b64 })
+            });
+            const result = await response.json();
+
+            if (result.status === 'success' || result.status === 'error') {
+                showResult(result.name, result.message, result.status);
+            }
+        } catch (err) {
+            console.error("Identification error:", err);
+        }
+    }
+
+    // Identify every 3 seconds to avoid overloading
+    setInterval(identifyFace, 3000);
+</script>
+{% endblock %}

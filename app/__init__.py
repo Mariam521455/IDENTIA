@@ -28,8 +28,10 @@ def create_app():
     # Import and register Blueprints
     from app.api.auth import auth_bp
     from app.api.main import main_bp
+    from app.api.recognition import recognition_bp
     
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
+    app.register_blueprint(recognition_bp)
 
     return app

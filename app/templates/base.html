@@ -1,107 +1,141 @@
 <!DOCTYPE html>
-<html lang="fr" class="h-full bg-slate-50">
+<html lang="fr" class="h-100">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IDENTIA | Plateforme Institutionnelle de Pointage</title>
-    <!-- Tailwind CSS via CDN for development, professional config -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f0f4ff',
-                            100: '#e0e9fe',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <title>IDENTIA | Système Intelligent de Pointage</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        :root {
+            --identia-blue-deep: #0a192f;
+            --identia-blue-brand: #1e3a8a;
+            --identia-blue-light: #f0f4f8;
+            --identia-accent: #2563eb;
         }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--identia-blue-light);
+            color: var(--identia-blue-deep);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--identia-blue-brand) !important;
+        }
+
         .vibrant-gradient {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            background: linear-gradient(135deg, var(--identia-blue-brand) 0%, var(--identia-accent) 100%);
+            color: white;
+        }
+
+        .vibrant-gradient:hover {
+            opacity: 0.9;
+            color: white;
+        }
+
+        .btn-brand {
+            background-color: var(--identia-blue-brand);
+            color: white;
+            border-radius: 8px;
+            padding: 10px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-brand:hover {
+            background-color: var(--identia-accent);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
-<body class="h-full font-sans text-slate-900">
-    
-    {% if current_user.is_authenticated %}
-    <div class="min-h-full flex flex-col">
-        <!-- Modern Header -->
-        <header class="glass sticky top-0 z-40 w-full border-b border-slate-200">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16 items-center">
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 vibrant-gradient rounded-lg flex items-center justify-center text-white font-bold text-lg">I</div>
-                        <span class="text-xl font-bold tracking-tight text-brand-900">IDENTIA</span>
-                    </div>
-                    
-                    <nav class="hidden md:flex space-x-8">
-                        <a href="{{ url_for('main.dashboard') }}" class="text-slate-600 hover:text-brand-600 font-medium">Tableau de bord</a>
-                        <a href="{{ url_for('main.students_list') }}" class="text-slate-600 hover:text-brand-600 font-medium">Étudiants</a>
-                        <a href="{{ url_for('main.attendance_mgmt') }}" class="text-slate-600 hover:text-brand-600 font-medium">Présences</a>
-                        {% if current_user.role in ['SUPER_ADMIN', 'TECH_USER'] %}
-                        <a href="{{ url_for('main.audit_view') }}" class="text-slate-600 hover:text-brand-600 font-medium">Audit & Logs</a>
-                        {% endif %}
-                    </nav>
 
-                    <div class="flex items-center gap-4">
-                        <div class="flex items-center gap-3 pr-4 border-r border-slate-200">
-                            <div class="text-right hidden sm:block">
-                                <p class="text-sm font-semibold text-slate-900 leading-none">{{ current_user.full_name }}</p>
-                                <p class="text-xs text-slate-500">{{ current_user.role }}</p>
-                            </div>
-                            <div class="w-9 h-9 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold uppercase">
-                                {{ current_user.full_name[:2] }}
-                            </div>
-                        </div>
-                        <a href="{{ url_for('auth.logout') }}" class="text-sm font-medium text-red-600 hover:text-red-700">Déconnexion</a>
+<body class="d-flex flex-column h-100">
+
+    {% if current_user.is_authenticated %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('main.index') }}">
+                <div class="rounded-2 vibrant-gradient d-flex align-items-center justify-content-center"
+                    style="width: 32px; height: 32px;">I</div>
+                <span>IDENTIA</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="{{ url_for('main.students_list') }}">Étudiants</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="{{ url_for('main.classes_list') }}">Classes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="{{ url_for('main.schedules_list') }}">Horaires</a>
+                    </li>
+                    {% if current_user.role in ['SUPER_ADMIN', 'TECH_USER'] %}
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="{{ url_for('main.audit_view') }}">Audit</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="text-end d-none d-sm-block">
+                        <div class="small fw-bold">{{ current_user.full_name }}</div>
+                        <div class="text-muted" style="font-size: 0.75rem;">{{ current_user.role }}</div>
                     </div>
+                    <a href="{{ url_for('auth.logout') }}"
+                        class="btn btn-outline-danger btn-sm rounded-pill px-3">Déconnexion</a>
                 </div>
             </div>
-        </header>
-
-        <!-- Page Content -->
-        <main class="flex-grow py-8">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {% with messages = get_flashed_messages() %}
-                  {% if messages %}
-                    {% for message in messages %}
-                      <div class="mb-4 p-4 rounded-lg bg-red-50 text-red-700 border border-red-100">{{ message }}</div>
-                    {% endfor %}
-                  {% endif %}
-                {% endwith %}
-                
-                {% block content %}{% endblock %}
-            </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="bg-white border-t border-slate-200 py-6">
-            <div class="max-w-7xl mx-auto px-4 text-center">
-                <p class="text-sm text-slate-500">&copy; 2026 IDENTIA Platform. Système de reconnaissance faciale institutionnel.</p>
-            </div>
-        </footer>
-    </div>
-    {% else %}
-        {% block auth_content %}{% endblock %}
+        </div>
+    </nav>
     {% endif %}
 
+    <main class="flex-shrink-0 py-4">
+        <div class="container mt-4">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible fade show rounded-3 border-0 shadow-sm mb-4" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-4 bg-white border-top">
+        <div class="container text-center">
+            <span class="text-muted small">&copy; 2026 IDENTIA - Ministère de l'Enseignement Supérieur. Tous droits
+                réservés.</span>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

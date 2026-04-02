@@ -3,8 +3,8 @@ echo ==========================================
 echo   IDENTIA - Initialisation du Systeme
 echo ==========================================
 
-echo [1/4] Creation de l'environnement virtuel...
-python -m venv venv
+echo [1/4] Creation de l'environnement virtuel avec Python 3.12...
+py -3.12 -m venv venv --clear
 
 echo [2/4] Activation de l'environnement...
 call venv\Scripts\activate

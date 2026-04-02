@@ -1,61 +1,71 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="space-y-8">
-    <div class="flex justify-between items-end">
-        <div>
-            <h1 class="text-3xl font-bold text-slate-900">Gestion des Étudiants</h1>
-            <p class="text-slate-500 mt-1">Gérez le registre institutionnel et les données biométriques.</p>
-        </div>
-        <button
-            class="px-5 py-2.5 vibrant-gradient rounded-xl text-sm font-semibold text-white shadow-lg hover:opacity-90 flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-                </path>
-            </svg>
-            Inscrire un Étudiant
-        </button>
+<div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+        <h2 class="fw-bold mb-0">Gestion des Étudiants</h2>
+        <p class="text-muted mb-0">Base de données institutionnelle des enrôlements.</p>
     </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-white bg-white border px-3 rounded-3 shadow-sm">Importer CSV</button>
+        <a href="{{ url_for('recognition.enroll') }}" class="btn btn-brand px-4 rounded-3 shadow-sm">Nouvel Étudiant</a>
+    </div>
+</div>
 
-    <!-- Student Table (Placeholder for Institutional List) -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="p-4 bg-slate-50 border-b border-slate-200 flex gap-4">
-            <input type="text" placeholder="Rechercher par nom ou matricule..."
-                class="bg-white border border-slate-200 rounded-lg px-4 py-2 text-sm w-96 focus:ring-2 focus:ring-brand-500 outline-none">
-            <select class="bg-white border border-slate-200 rounded-lg px-4 py-2 text-sm">
-                <option>Toutes les classes</option>
-                <option>Informatique - L3</option>
-                <option>Gestion - M1</option>
-            </select>
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <div class="card-header bg-white py-3 border-bottom-0">
+        <div class="row align-items-center">
+            <div class="col">
+                <div class="input-group" style="max-width: 300px;">
+                    <span class="input-group-text bg-light border-0"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Rechercher...">
+                </div>
+            </div>
+            <div class="col-auto">
+                <select class="form-select form-select-sm border-0 bg-light">
+                    <option>Toutes les classes</option>
+                </select>
+            </div>
         </div>
-        <table class="w-full text-left text-sm">
-            <thead class="bg-slate-50 text-slate-500 uppercase text-xs font-semibold">
-                <tr>
-                    <th class="px-6 py-4">Matricule</th>
-                    <th class="px-6 py-4">Nom Complet</th>
-                    <th class="px-6 py-4">Email</th>
-                    <th class="px-6 py-4">Biométrie</th>
-                    <th class="px-6 py-4 text-right">Actions</th>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="bg-light">
+                <tr class="small text-muted text-uppercase fw-bold">
+                    <th class="ps-4 py-3">Matricule</th>
+                    <th class="py-3">Nom Complet</th>
+                    <th class="py-3">Classe</th>
+                    <th class="py-3">Statut Bio</th>
+                    <th class="py-3 text-end pe-4">Actions</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-100">
-                <tr class="hover:bg-slate-50 transition-colors">
-                    <td class="px-6 py-4 font-mono text-slate-500">ID-2026-001</td>
-                    <td class="px-6 py-4 font-bold text-slate-900">Driss Amrani</td>
-                    <td class="px-6 py-4 text-slate-600">d.amrani@univ.local</td>
-                    <td class="px-6 py-4 font-medium"><span class="flex items-center gap-1.5 text-emerald-600"><span
-                                class="w-2 h-2 rounded-full bg-emerald-500"></span> Archivé</span></td>
-                    <td class="px-6 py-4 text-right space-x-2">
-                        <button class="text-brand-600 hover:text-brand-800 font-medium">Éditer</button>
-                        <button class="text-slate-400 hover:text-red-600 font-medium">Supprimer</button>
+            <tbody>
+                {% if students %}
+                {% for student in students %}
+                <tr>
+                    <td class="ps-4 py-3 fw-bold text-primary">{{ student.student_id }}</td>
+                    <td>{{ student.first_name }} {{ student.last_name }}</td>
+                    <td>{% if student.academic_class %}{{ student.academic_class.name }}{% else %}-{% endif %}</td>
+                    <td>
+                        {% set enc_count = student.encodings.count() %}
+                        {% if enc_count >= 3 %}
+                        <span class="badge bg-success-subtle text-success px-3">ENRÔLÉ ({{ enc_count }})</span>
+                        {% else %}
+                        <span class="badge bg-warning-subtle text-warning px-3">INCOMPLET ({{ enc_count }})</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-end pe-4">
+                        <button class="btn btn-sm btn-light rounded-pill px-3">Modifier</button>
                     </td>
                 </tr>
-                <!-- More students here -->
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">Aucun étudiant trouvé</td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
-        <div class="p-4 border-t border-slate-100 bg-slate-50 text-center">
-            <p class="text-xs text-slate-400 italic">Affichage de 1 étudiant sur 1,284 inscrits.</p>
-        </div>
     </div>
 </div>
 {% endblock %}
