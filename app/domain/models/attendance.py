@@ -9,12 +9,15 @@ class Student(db.Model, AuditMixin):
     student_id = db.Column(db.String(20), unique=True, nullable=False, index=True)
     first_name = db.Column(db.String(64), nullable=False)
     last_name = db.Column(db.String(64), nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    major = db.Column(db.String(128)) # Finance comptabilité, Génie informatique, etc.
+    class_id = db.Column(db.Integer, db.ForeignKey('academic_class.id'), nullable=True)
     
-    # Biometric data (facial encoding stored as binary blob)
+    # Biometric data status
+    is_enrolled = db.Column(db.Boolean, default=False)
     face_encoding = db.Column(db.LargeBinary, nullable=True)
     
     attendances = db.relationship('Attendance', backref='student', lazy='dynamic')
+    encodings = db.relationship('FacialEncoding', backref='student', lazy='dynamic')
 
     def __repr__(self):
         return f'<Student {self.first_name} {self.last_name}>'
@@ -54,3 +57,14 @@ class Attendance(db.Model, AuditMixin):
     
     def __repr__(self):
         return f'<Attendance Student:{self.student_id} Session:{self.session_id}>'
+
+class FacialEncoding(db.Model, AuditMixin):
+    __tablename__ = 'facial_encoding'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
+    encoding = db.Column(db.LargeBinary, nullable=False)
+    angle_type = db.Column(db.String(20), default='front') # front, left, right
+    
+    def __repr__(self):
+        return f'<FacialEncoding Student:{self.student_id} Angle:{self.angle_type}>'

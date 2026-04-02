@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+        <h2 class="fw-bold mb-0">Gestion des Classes</h2>
+        <p class="text-muted mb-0">Configuration des niveaux académiques (L1-M2).</p>
+    </div>
+    <button class="btn btn-brand px-4 rounded-3 shadow-sm">Ajouter une Classe</button>
+</div>
+
+<div class="row g-4">
+    {% for cls in classes %}
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 p-3 h-100">
+            <div class="card-body">
+                <span class="badge bg-primary-subtle text-primary mb-2 text-uppercase">{{ cls.code }}</span>
+                <h5 class="fw-bold mb-1">{{ cls.name }}</h5>
+                <p class="small text-muted mb-4">{{ cls.students.count() }} étudiant(s) inscrit(s)</p>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-light w-100">Modifier</button>
+                    <button class="btn btn-sm btn-outline-danger px-3"><i class="bi bi-trash"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

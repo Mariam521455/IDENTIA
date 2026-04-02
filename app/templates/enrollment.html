@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <h2 class="fw-bold">Nouveaux Étudiants</h2>
+        <p class="text-muted">Enrôlement facial et création de dossier.</p>
+    </div>
+</div>
+
+<div class="row g-4" id="enrollment-wizard">
+    <!-- Step 1: Info -->
+    <div class="col-lg-12" id="step-info">
+        <div class="card glass-card border-0 p-4 shadow-lg rounded-4">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-4 text-brand">
+                    <span class="badge bg-brand text-white rounded-circle p-3 me-3">1</span>
+                    <h5 class="fw-bold mb-0">Informations Académiques</h5>
+                </div>
+                <form id="info-form">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-muted text-uppercase tracking-wider">Nom</label>
+                            <input type="text" id="last_name" class="form-control border-0 bg-light py-3 px-4 rounded-3"
+                                placeholder="Ex: DUPONT" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label
+                                class="form-label small fw-bold text-muted text-uppercase tracking-wider">Prénom</label>
+                            <input type="text" id="first_name"
+                                class="form-control border-0 bg-light py-3 px-4 rounded-3" placeholder="Ex: Jean"
+                                required>
+                        </div>
+                        <div class="col-md-6">
+                            <label
+                                class="form-label small fw-bold text-muted text-uppercase tracking-wider">Matricule</label>
+                            <input type="text" id="matricule" class="form-control border-0 bg-light py-3 px-4 rounded-3"
+                                placeholder="EMP-2026-XXXX" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label
+                                class="form-label small fw-bold text-muted text-uppercase tracking-wider">Filière</label>
+                            <select id="major" class="form-select border-0 bg-light py-3 px-4 rounded-3" required>
+                                <option value="">Choisir...</option>
+                                <option>Finance comptabilité</option>
+                                <option>Gestion de ressources humaines</option>
+                                <option>Marketing et communication</option>
+                                <option>Gestion logistique et transport</option>
+                                <option>Génie informatique</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label
+                                class="form-label small fw-bold text-muted text-uppercase tracking-wider">Classe</label>
+                            <select id="class_id" class="form-select border-0 bg-light py-3 px-4 rounded-3" required>
+                                <option value="">Choisir...</option>
+                                {% for cls in classes %}
+                                <option value="{{ cls.id }}">{{ cls.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-12 mt-4 text-end">
+                            <button type="button" id="next-to-capture"
+                                class="btn btn-brand btn-lg px-5 py-3 shadow-lg rounded-3 fw-bold">CONTINUER VERS LA
+                                CAPTURE</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 2: Capture (Initially hidden) -->
+    <div class="col-lg-12 d-none" id="step-capture">
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-4 box-glow">
+                    <div class="card-body p-0 position-relative bg-dark" style="min-height: 450px;">
+                        <video id="video" width="100%" height="auto" autoplay muted class="bg-dark"></video>
+                        <canvas id="canvas" style="display:none;"></canvas>
+
+                        <!-- HUD Overlay -->
+                        <div class="position-absolute top-50 start-50 translate-middle border border-light border-1 opacity-25 rounded-circle"
+                            style="width: 280px; height: 280px; pointer-events: none;"></div>
+                        <div class="position-absolute top-0 start-0 p-3">
+                            <span class="badge bg-danger pulse me-2">LIVE</span>
+                            <span id="capture-status" class="small text-white opacity-75">Prêt pour capture</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white p-4 border-0 text-center">
+                        <div class="btn-group w-100 mb-3 shadow-sm rounded-3 overflow-hidden">
+                            <button id="capture-front" class="btn btn-brand py-3 fw-bold">FACE (0°)</button>
+                            <button id="capture-left" class="btn btn-outline-brand py-3 fw-bold">GAUCHE (-45°)</button>
+                            <button id="capture-right" class="btn btn-outline-brand py-3 fw-bold">DROITE (+45°)</button>
+                        </div>
+                        <p class="small text-muted mb-0">La capture multi-angle est <strong>obligatoire</strong> pour la
+                            reconnaissance en temps réel.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card glass-card border-0 p-4 h-100 shadow-lg">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-center mb-4 text-brand">
+                            <span class="badge bg-brand text-white rounded-circle p-3 me-3">2</span>
+                            <h5 class="fw-bold mb-0">Aperçus Biométriques</h5>
+                        </div>
+
+                        <div class="row g-3 mb-auto">
+                            <div class="col-12 text-center">
+                                <div id="preview-front" class="preview-box mx-auto"
+                                    style="width: 200px; height: 200px;">FACE</div>
+                            </div>
+                            <div class="col-6">
+                                <div id="preview-left" class="preview-box">GAUCHE</div>
+                            </div>
+                            <div class="col-6">
+                                <div id="preview-right" class="preview-box">DROITE</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <button type="button" id="submit-enrollment"
+                                class="btn btn-success btn-lg w-100 py-3 shadow mb-3 fw-bold">FINALISER
+                                L'ENRÔLEMENT</button>
+                            <button type="button" id="back-to-info"
+                                class="btn btn-link w-100 text-muted text-decoration-none small">Modifier les
+                                informations</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .preview-box {
+        background: #f8f9fa;
+        border-radius: 12px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #adb5bd;
+        font-weight: bold;
+        font-size: 0.75rem;
+        border: 2px dashed #dee2e6;
+        overflow: hidden;
+    }
+
+    .box-glow {
+        box-shadow: 0 0 40px rgba(37, 99, 235, 0.1);
+    }
+
+    .pulse {
+        animation: pulse-red 2s infinite;
+    }
+
+    @keyframes pulse-red {
+        0% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+        }
+
+        70% {
+            transform: scale(1);
+            box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
+        }
+
+        100% {
+            transform: scale(0.95);
+            box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+        }
+    }
+</style>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const stepInfo = document.getElementById('step-info');
+    const stepCapture = document.getElementById('step-capture');
+
+    let capturedImages = { front: null, left: null, right: null };
+
+    // Navigation and Validation
+    document.getElementById('next-to-capture').onclick = () => {
+        const form = document.getElementById('info-form');
+        if (form.checkValidity()) {
+            stepInfo.classList.add('d-none');
+            stepCapture.classList.remove('d-none');
+            initCamera();
+        } else {
+            form.reportValidity();
+        }
+    };
+
+    document.getElementById('back-to-info').onclick = () => {
+        stepCapture.classList.add('d-none');
+        stepInfo.classList.remove('d-none');
+    };
+
+    function initCamera() {
+        navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
+            .then(stream => { video.srcObject = stream; })
+            .catch(err => { alert("Caméra inaccessible: " + err); });
+    }
+
+    function capture(angle) {
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+        capturedImages[angle] = dataUrl;
+
+        const preview = document.getElementById(`preview-${angle}`);
+        preview.innerHTML = `<img src="${dataUrl}" class="w-100 h-100 object-fit-cover shadow-sm">`;
+
+        const btn = document.getElementById(`capture-${angle}`);
+        btn.classList.add('btn-success');
+        btn.classList.remove('btn-outline-brand', 'btn-brand');
+    }
+
+    document.getElementById('capture-front').onclick = () => capture('front');
+    document.getElementById('capture-left').onclick = () => capture('left');
+    document.getElementById('capture-right').onclick = () => capture('right');
+
+    document.getElementById('submit-enrollment').onclick = async () => {
+        if (!capturedImages.front || !capturedImages.left || !capturedImages.right) {
+            alert("Veuillez capturer les 3 angles obligatoires.");
+            return;
+        }
+
+        const data = {
+            first_name: document.getElementById('first_name').value,
+            last_name: document.getElementById('last_name').value,
+            matricule: document.getElementById('matricule').value,
+            major: document.getElementById('major').value,
+            class_id: document.getElementById('class_id').value,
+            image_front: capturedImages.front,
+            image_left: capturedImages.left,
+            image_right: capturedImages.right
+        };
+
+        try {
+            const btn = document.getElementById('submit-enrollment');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Traitement biométrique...';
+
+            const resp = await fetch("{{ url_for('recognition.enroll') }}", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            const res = await resp.json();
+
+            if (res.status === 'success') {
+                alert("Enrôlement réussi ! Vous pouvez maintenant accéder au pointage.");
+                window.location.href = "{{ url_for('main.portal') }}";
+            } else {
+                alert("Erreur: " + res.message);
+                btn.disabled = false;
+                btn.innerText = "FINALISER L'ENRÔLEMENT";
+            }
+        } catch (err) {
+            alert("Erreur réseau");
+        }
+    };
+</script>
+{% endblock %}
